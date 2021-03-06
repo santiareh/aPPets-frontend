@@ -2,7 +2,7 @@
 	<AddTask @createTask="addTask"/>
 	<ul class="space-y-3" >
 		<li class="bg-white shadow overflow-hidden rounded-md px-6 py-4" v-for="task in tasks" :key="task.id">
-			<Task v-bind:task="task" @deleteTask="removeTask"/>
+			<Task v-bind:task="task"  @updateTask="updateTask" @deleteTask="removeTask"/>
 		</li>
 	</ul>
 </template>
@@ -32,11 +32,14 @@ export default {
 			this.tasks = await axios.get("http://localhost:8080/task/all").then((response) => { return response.data })
 		},
 		addTask(value){
-			// console.log(value);
 			this.tasks.push(value);
 		},
 		removeTask(value){
 			this.tasks = this.tasks.filter(task => task.id != value);
+		},
+		updateTask(value){
+			let index = this.tasks.findIndex(task => task.id === value.id)
+			this.tasks[index].content = value.content;
 		}
 
 	}
