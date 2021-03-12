@@ -5,7 +5,6 @@
 <script>
 export default {
   name: "Callback",
-  mode: "history",
   created() {
     if (this.$route.query.error) {
       this.$auth.logout({
