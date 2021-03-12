@@ -1,62 +1,62 @@
-import createAuth0Client from '@auth0/auth0-spa-js'
-import { computed, reactive, watchEffect } from 'vue'
+import createAuth0Client from "@auth0/auth0-spa-js";
+import { computed, reactive, watchEffect } from "vue";
 
-let client
+let client;
 const state = reactive({
   loading: true,
   isAuthenticated: false,
   user: {},
   popupOpen: false,
-  error: null,
-})
+  error: null
+});
 
 async function loginWithPopup() {
-  state.popupOpen = true
+  state.popupOpen = true;
 
   try {
-    await client.loginWithPopup(0)
+    await client.loginWithPopup(0);
   } catch (e) {
-    console.error(e)
+    console.error(e);
   } finally {
-    state.popupOpen = false
+    state.popupOpen = false;
   }
 
-  state.user = await client.getUser()
-  state.isAuthenticated = true
+  state.user = await client.getUser();
+  state.isAuthenticated = true;
 }
 
 async function handleRedirectCallback() {
-  state.loading = true
+  state.loading = true;
 
   try {
-    await client.handleRedirectCallback()
-    state.user = await client.getUser()
-    state.isAuthenticated = true
+    await client.handleRedirectCallback();
+    state.user = await client.getUser();
+    state.isAuthenticated = true;
   } catch (e) {
-    state.error = e
+    state.error = e;
   } finally {
-    state.loading = false
+    state.loading = false;
   }
 }
 
 function loginWithRedirect(o) {
-  return client.loginWithRedirect(o)
+  return client.loginWithRedirect(o);
 }
 
 function getIdTokenClaims(o) {
-  return client.getIdTokenClaims(o)
+  return client.getIdTokenClaims(o);
 }
 
 function getTokenSilently(o) {
-  return client.getTokenSilently(o)
+  return client.getTokenSilently(o);
 }
 
 function getTokenWithPopup(o) {
-  return client.getTokenWithPopup(o)
+  return client.getTokenWithPopup(o);
 }
 
 function logout(o) {
-  return client.logout(o)
+  return client.logout(o);
 }
 
 const authPlugin = {
@@ -69,67 +69,66 @@ const authPlugin = {
   handleRedirectCallback,
   loginWithRedirect,
   loginWithPopup,
-  logout,
-}
+  logout
+};
 
 export const routeGuard = (to, from, next) => {
-  const { isAuthenticated, loading, loginWithRedirect } = authPlugin
+  const { isAuthenticated, loading, loginWithRedirect } = authPlugin;
 
   const verify = () => {
     // If the user is authenticated, continue with the route
     if (isAuthenticated.value) {
-      return next()
+      return next();
     }
 
     // Otherwise, log in
-    loginWithRedirect({ appState: { targetUrl: to.fullPath } })
-  }
+    loginWithRedirect({ appState: { targetUrl: to.fullPath } });
+  };
 
   // If loading has already finished, check our auth state using `fn()`
   if (!loading.value) {
-    return verify()
+    return verify();
   }
 
   // Watch for the loading property to change before we check isAuthenticated
   watchEffect(() => {
     if (loading.value === false) {
-      return verify()
+      return verify();
     }
-  })
-}
+  });
+};
 
 export const setupAuth = async (options, callbackRedirect) => {
   client = await createAuth0Client({
-    ...options,
-  })
+    ...options
+  });
 
   try {
     // If the user is returning to the app after authentication
-    
 
     if (
-      window.location.search.includes('code=') &&
-      window.location.search.includes('state=')
+      window.location.search.includes("code=") &&
+      window.location.search.includes("state=")
     ) {
       // handle the redirect and retrieve tokens
-      const { appState } = await client.handleRedirectCallback()
+      const { appState } = await client.handleRedirectCallback();
 
       // Notify subscribers that the redirect callback has happened, passing the appState
       // (useful for retrieving any pre-authentication state)
-      callbackRedirect(appState)
+      callbackRedirect(appState);
     }
   } catch (e) {
-    state.error = e
+    state.error = e;
   } finally {
     // Initialize our internal authentication state
-    state.isAuthenticated = await client.isAuthenticated()
-    state.user = await client.getUser()
-    state.loading = false
+    state.isAuthenticated = await client.isAuthenticated();
+    state.user = await client.getUser();
+    state.loading = false;
   }
 
   return {
-    install: (app) => {
-      app.config.globalProperties.$auth = authPlugin
-    },
-  }
-}
+    install: app => {
+      app.config.globalProperties.$auth = authPlugin;
+    }
+  };
+};

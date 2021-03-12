@@ -36,14 +36,16 @@ export default {
   },
   methods: {
     async getTasks() {
-      	this.tasks = await axios
-        .get(process.env.VUE_APP_APIENDPOINT + "task/all",{ params: { userID: this.$auth.user.value.sub.replace("auth0|", "") } })
+      this.tasks = await axios
+        .get(process.env.VUE_APP_APIENDPOINT + "task/all", {
+          params: { userID: this.$auth.user.value.sub.replace("auth0|", "") }
+        })
         .then(response => {
           return response.data;
         });
     },
     addTask(value) {
-    	this.tasks = [value, ...this.tasks];
+      this.tasks = [value, ...this.tasks];
     },
     removeTask(value) {
       this.tasks = this.tasks.filter(task => task.id != value);

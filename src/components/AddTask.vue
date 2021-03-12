@@ -26,10 +26,12 @@
 
   <div class="my-6 relative" v-if="toggle">
     <div class="mt-1">
-    	<input 
+      <input
         class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm rounded-lg p-4 pr-28 overflow-hidden "
-
-    	 type="text" v-model="title" placeholder="Note Title">
+        type="text"
+        v-model="title"
+        placeholder="Note Title"
+      />
     </div>
     <div class="mt-1">
       <textarea
@@ -73,7 +75,11 @@ export default {
       if (this.content == "") {
         this.req = true;
       } else {
-        let data = { title: this.title, content: this.content, userID: this.$auth.user.value.sub.replace("auth0|", "")  };
+        let data = {
+          title: this.title,
+          content: this.content,
+          userID: this.$auth.user.value.sub.replace("auth0|", "")
+        };
         let task = await axios
           .post(process.env.VUE_APP_APIENDPOINT + "task/create", data)
           .then(response => {
