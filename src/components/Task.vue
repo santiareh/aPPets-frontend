@@ -133,7 +133,8 @@ export default {
       let tempTask = {
         id: this.task.id,
         title: this.task.title,
-        content: this.content
+        content: this.content,
+        userID: this.$auth.user.value.sub.replace("auth0|", "")
       };
       await axios
         .post(process.env.VUE_APP_APIENDPOINT + "task/update", tempTask)
