@@ -78,7 +78,7 @@ export default {
         let data = {
           title: this.title,
           content: this.content,
-          userID: this.$auth.user.value.sub.replace("auth0|", "")
+          userID: this.$auth.user.value.sub.replace("|", "")
         };
         let task = await axios
           .post(process.env.VUE_APP_APIENDPOINT + "task/create", data)

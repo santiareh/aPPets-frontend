@@ -134,7 +134,7 @@ export default {
         id: this.task.id,
         title: this.task.title,
         content: this.content,
-        userID: this.$auth.user.value.sub.replace("auth0|", "")
+        userID: this.$auth.user.value.sub.replace("|", "")
       };
       await axios
         .post(process.env.VUE_APP_APIENDPOINT + "task/update", tempTask)

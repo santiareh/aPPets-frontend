@@ -38,7 +38,7 @@ export default {
     async getTasks() {
       this.tasks = await axios
         .get(process.env.VUE_APP_APIENDPOINT + "task/all", {
-          params: { userID: this.$auth.user.value.sub.replace("auth0|", "") }
+          params: { userID: this.$auth.user.value.sub.replace("|", "") }
         })
         .then(response => {
           return response.data;
