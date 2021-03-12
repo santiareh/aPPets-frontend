@@ -5,6 +5,14 @@
 npm install
 ```
 
+```
+cp .env.example .env
+```
+
+Setup App Port in .env
+
+Setup Auth0 Credentials in .env
+
 ### Compiles and hot-reloads for development
 ```
 npm run serve

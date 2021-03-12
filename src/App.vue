@@ -1,31 +1,9 @@
 <template>
-	<div class="text-center text-white">
-		<h1 class="text-6xl my-12">Todo</h1>
+	<div class="my-16 text-white container mx-auto text-center text-6xl">
+		<h1>Todo</h1>
+		<router-link to="/" type="button" class="relative inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mr-2">
+      		Home
+      	</router-link>
 	</div>
-	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-		<div class="max-w-3xl mx-auto">
-			<div class="bg-white overflow-hidden shadow rounded-lg">
-				<div class="px-4 py-5 sm:p-6 bg-gray-700">
-					<Tasks/>
-				</div>
-			</div>
-		</div>
-	</div>
+	<router-view />
 </template>
-
-<script>
-import Tasks from "./components/Tasks.vue";
-
-export default {
-	name: "App",
-	
-	components: {
-		Tasks
-	}
-	
-};
-</script>
-
-<style>
-
-</style>
