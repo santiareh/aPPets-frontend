@@ -1,9 +1,9 @@
 <template>
   <div class="container mx-auto">
     <h1 class="text-white text-2xl text-center mb-12">
-      Viewing: {{ task.title }}
+      Viewing: {{ task.name }}
     </h1>
-    <Task v-bind:task="task" @updateTask="updateTask" />
+    <Task v-bind:pet="task" @updateTask="updateTask" />
   </div>
 </template>
 <script>
@@ -31,7 +31,7 @@ export default {
     },
     async getTask() {
       this.task = await axios
-        .get(process.env.VUE_APP_APIENDPOINT + "task/id", {
+        .get(process.env.VUE_APP_APIENDPOINT + "pet/id", {
           params: { id: useRoute().params.id }
         })
         .then(response => {
@@ -40,6 +40,7 @@ export default {
     },
     updateTask(value) {
       this.task.content = value.content;
+      this.task.race = value.race;
     }
   }
 };

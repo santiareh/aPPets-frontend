@@ -5,11 +5,12 @@
     >
       <div class="ml-4 mt-4">
         <h3 class="text-lg leading-6 font-medium text-gray-900">
-          Task: {{ task.title }}
+          {{ pet.name }}
+          {{ pet.type }}
         </h3>
         <p class="mt-1 text-sm text-gray-500" v-if="!edit">
-          {{ formatDate(task.timestamp) }} <br />
-          {{ task.content }}
+          {{ formatDate(pet.timestamp) }} <br />
+          {{ pet.content }}
         </p>
 
         <div class="my-6 relative shadow-md" v-else>
@@ -37,7 +38,7 @@
       </div>
       <div class="ml-4 mt-4 flex-shrink-0">
         <router-link
-          :to="{ name: 'task', params: { id: task.id } }"
+          :to="{ name: 'task', params: { id: pet.id } }"
           type="button"
           class="relative inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mr-2"
         >
@@ -115,14 +116,14 @@ import dateFormat from "dateformat";
 export default {
   name: "Task",
   props: {
-    task: Object
+    pet: Object
   },
   mounted() {},
   data() {
     return {
       edit: false,
       req: false,
-      content: this.task.content
+      content: this.pet.content
     };
   },
   methods: {
@@ -131,13 +132,13 @@ export default {
     },
     async updateTask() {
       let tempTask = {
-        id: this.task.id,
-        title: this.task.title,
+        id: this.pet.id,
+        title: this.pet.title,
         content: this.content,
         userID: this.$auth.user.value.sub.replace("|", "")
       };
       await axios
-        .post(process.env.VUE_APP_APIENDPOINT + "task/update", tempTask)
+        .post(process.env.VUE_APP_APIENDPOINT + "pet/update", tempTask)
         .then(response => {
           console.log(response.data);
         });
@@ -147,7 +148,7 @@ export default {
     async deleteTask(id) {
       let data = { id: id };
       await axios
-        .delete(process.env.VUE_APP_APIENDPOINT + "task/delete", { data: data })
+        .delete(process.env.VUE_APP_APIENDPOINT + "pet/delete", { data: data })
         .then(response => {
           console.log(response.data);
         });

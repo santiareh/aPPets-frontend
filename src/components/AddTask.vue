@@ -19,7 +19,7 @@
             clip-rule="evenodd"
           />
         </svg>
-        <span>Add new task</span>
+        <span>Add New Pet</span>
       </button>
     </div>
   </div>
@@ -29,18 +29,34 @@
       <input
         class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm rounded-lg p-4 pr-28 overflow-hidden "
         type="text"
-        v-model="title"
-        placeholder="Note Title"
+        v-model="name"
+        placeholder="Pet Name"
+      />
+    </div>
+    <div class="mt-1">
+      <input
+        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm rounded-lg p-4 pr-28 overflow-hidden "
+        type="text"
+        v-model="type"
+        placeholder="Pet Type"
+      />
+    </div>
+    <div class="mt-1">
+      <input
+        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm rounded-lg p-4 pr-28 overflow-hidden "
+        type="text"
+        v-model="race"
+        placeholder="Pet Race"
       />
     </div>
     <div class="mt-1">
       <textarea
         id="about"
         name="about"
-        rows="2"
+        rows="1"
         class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm rounded-lg p-4 pr-28 overflow-hidden "
         v-bind:class="{ 'border-2 ring-red-500 border-red-500': req }"
-        placeholder="note content"
+        placeholder="Pet Story"
         v-model="content"
       ></textarea>
     </div>
@@ -48,7 +64,7 @@
       <button
         type="submit"
         class="ml-3 h-10 inline-flex justify-center py-2 px-4 border-0 shadow-sm text-sm font-medium  rounded-br-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-        v-on:click="createTask()"
+        v-on:click="createPet()"
       >
         Submit
       </button>
@@ -67,27 +83,33 @@ export default {
       toggle: false,
       content: "",
       req: false,
-      title: ""
+      name: "",
+      race: "",
+      type: "",
     };
   },
   methods: {
-    async createTask() {
+    async createPet() {
       if (this.content == "") {
         this.req = true;
       } else {
         let data = {
-          title: this.title,
+          name: this.name,
+          type: this.type,
+          race: this.race,
           content: this.content,
           userID: this.$auth.user.value.sub.replace("|", "")
         };
         let task = await axios
-          .post(process.env.VUE_APP_APIENDPOINT + "task/create", data)
+          .post(process.env.VUE_APP_APIENDPOINT + "pet/create", data)
           .then(response => {
             return response.data;
           });
         this.req = false;
         this.content = "";
-        this.title = "";
+        this.name = "";
+        this.race = "";
+        this.type = "";
         this.toggle = false;
         this.$emit("createTask", task);
       }

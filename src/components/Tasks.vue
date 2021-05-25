@@ -7,7 +7,7 @@
       :key="task.id"
     >
       <Task
-        v-bind:task="task"
+        v-bind:pet="task"
         @updateTask="updateTask"
         @deleteTask="removeTask"
       />
@@ -37,7 +37,7 @@ export default {
   methods: {
     async getTasks() {
       this.tasks = await axios
-        .get(process.env.VUE_APP_APIENDPOINT + "task/all", {
+        .get(process.env.VUE_APP_APIENDPOINT + "pet/all", {
           params: { userID: this.$auth.user.value.sub.replace("|", "") }
         })
         .then(response => {

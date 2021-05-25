@@ -2,7 +2,7 @@
   <div
     class="my-16 text-white container mx-auto text-center text-6xl bg-gray-900"
   >
-    <h1>Todo</h1>
+    <h1>aPPets</h1>
     <router-link
       to="/"
       type="button"
